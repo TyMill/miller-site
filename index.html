@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>.miller</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --navy:#0a0f2c; --offwhite:#f9f9f6; }
+
+    body{
+      margin:0; background:var(--navy); color:var(--offwhite);
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+      height:100vh; display:flex; align-items:center; justify-content:center;
+    }
+
+    .row{
+      display:flex; align-items:center; gap:.75rem;   /* center zamiast baseline */
+      font-size:3rem; line-height:1; font-weight:600; /* stałe line-height */
+    }
+
+    .logo{ white-space:nowrap; }
+
+    .word{
+      font-weight:300;
+      display:inline-block;
+      width:auto;                    /* szerokość ustawimy JS-em */
+      height:1em;                    /* docelowo nadpisze JS */
+      opacity:0; transform:translateY(.25em);
+      transition:opacity .45s ease, transform .45s ease;
+      white-space:nowrap; text-align:left;
+    }
+    .word.show{ opacity:1; transform:translateY(0); }
+
+    @media (max-width: 600px){
+      .row{ font-size:2rem; }
+    }
+
+    .measure {
+      position:absolute; visibility:hidden; left:-9999px; top:-9999px;
+      font:inherit; white-space:nowrap; font-weight:300; line-height:1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="row">
+    <div class="logo">.miller</div>
+    <span id="word" class="word"></span>
+  </div>
+
+  <span id="measure" class="measure"></span>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const words = ['design', 'home staging', 'consulting', 'neuroarchitecture'];
+      const wordEl = document.getElementById('word');
+      const measureEl = document.getElementById('measure');
+
+      // Zmierz maks. szerokość i wysokość (przy line-height:1, font-weight:300)
+      let maxW = 0, maxH = 0;
+      words.forEach(w => {
+        measureEl.textContent = w;
+        maxW = Math.max(maxW, measureEl.offsetWidth);
+        maxH = Math.max(maxH, measureEl.offsetHeight);
+      });
+
+      // Ustal stabilny box na słowa — brak skoków
+      wordEl.style.width  = Math.ceil(maxW) + 'px';
+      wordEl.style.height = Math.ceil(maxH) + 'px';
+
+      // Rotacja słów
+      let i = 0;
+      const startDelay = 1200;   // najpierw sama .miller
+      const intervalMs = 3000;   // co 3 sekundy
+
+      function showNext() {
+        wordEl.classList.remove('show');
+        setTimeout(() => {
+          wordEl.textContent = words[i];
+          wordEl.classList.add('show');
+          i = (i + 1) % words.length;
+        }, 180);
+      }
+
+      setTimeout(() => {
+        showNext();
+        setInterval(showNext, intervalMs);
+      }, startDelay);
+    });
+  </script>
+
+</body>
+</html>
