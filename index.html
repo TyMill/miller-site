@@ -32,8 +32,18 @@
     }
     .word.show{ opacity:1; transform:translateY(0); }
 
+    /* PRAWY GÓRNY RÓG */
+    .top-right-text{
+      position:fixed;
+      top:1.5rem; right:2rem;
+      font-size:.95rem; font-weight:300; letter-spacing:.05em;
+      color:var(--offwhite); opacity:.75;
+      pointer-events:none; z-index:20; text-align:right;
+    }
+
     @media (max-width: 600px){
       .row{ font-size:2rem; }
+      .top-right-text{ font-size:.85rem; right:1rem; top:1rem; }
     }
 
     .measure {
@@ -43,6 +53,9 @@
   </style>
 </head>
 <body>
+
+  <!-- Napis w prawym górnym rogu -->
+  <div class="top-right-text">you designer — Gosia Miller</div>
 
   <div class="row">
     <div class="logo">.miller</div>
